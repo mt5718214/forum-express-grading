@@ -13,7 +13,8 @@ module.exports = {
           description: faker.lorem.text(),
           createdAt: new Date(),
           updatedAt: new Date(),
-          image: `https://loremflickr.com/320/240/restaurant,food/?random=${Math.random() * 100}`
+          image: `https://loremflickr.com/320/240/restaurant,food/?random=${Math.random() * 100}`,
+          CategoryId: Math.floor(Math.random() * 6) * 10 + 1
         })
       ), {})
   },
