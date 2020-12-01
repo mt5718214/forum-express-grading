@@ -25,6 +25,23 @@ module.exports = {
       req.flash('success_msg', 'Category has been successfully added')
       res.redirect('/admin/categories')
     })
+  },
+
+  putCategory: (req, res) => {
+    if (!req.body.name) {
+      req.flash('error_msg', "name didn't exist")
+      return res.redirect('back')
+    }
+
+    return Category.findByPk(req.params.id).then(category => {
+      return category.update({
+        name: req.body.name
+      })
+        .then(category => {
+          req.flash('success_msg', 'Category has been successfully updated')
+          res.redirect('/admin/categories')
+        })
+    })
   }
 
 }
