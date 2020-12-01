@@ -42,6 +42,17 @@ module.exports = {
           res.redirect('/admin/categories')
         })
     })
+  },
+
+  deleteCategory: (req, res) => {
+    return Category.findByPk(req.params.id)
+      .then((category) => {
+        category.destroy()
+          .then((category) => {
+            req.flash('success_msg', 'Category has been successfully deleted')
+            res.redirect('/admin/categories')
+          })
+      })
   }
 
 }
