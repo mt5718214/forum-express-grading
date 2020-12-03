@@ -87,6 +87,14 @@ const restController = {
           comments
         })
       })
+  },
+
+  getDashboard: (req, res) => {
+    return Restaurant.findByPk(req.params.id, { include: [Comment, Category] })
+      .then(restaurant => {
+        const NumberOfComments = restaurant.Comments.length
+        return res.render('dashboard', { restaurant: restaurant.toJSON(), NumberOfComments })
+      })
   }
 }
 

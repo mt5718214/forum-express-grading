@@ -1,0 +1,26 @@
+<div>
+  <h1>{{restaurant.name}}</h1>
+  <p class="lead">[{{restaurant.Category.name}}]</p>
+</div>
+
+<hr>
+
+<div class="row mt-4">
+  <ul class="list-group col-4">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      評論數
+      <span class="badge badge-primary badge-pill">{{NumberOfComments}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      瀏覽次數
+      <span class="badge badge-primary badge-pill"></span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      收藏數
+      <span class="badge badge-primary badge-pill"></span>
+    </li>
+  </ul>
+</div>
+
+<br>
+<a href="/restaurants/{{restaurant.id}}">回上一頁</a>
