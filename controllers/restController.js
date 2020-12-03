@@ -60,7 +60,11 @@ const restController = {
       ]
     }).then(restaurant => {
       // console.log(restaurant.Comments[0].User)
-      return res.render('restaurant', { restaurant: restaurant.toJSON() })
+      restaurant.viewCounts += 1
+      restaurant.save({ fields: ['viewCounts'] })
+        .then(restaurant => {
+          return res.render('restaurant', { restaurant: restaurant.toJSON() })
+        })
     })
   },
 
