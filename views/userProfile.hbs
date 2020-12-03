@@ -1,14 +1,28 @@
-<div class="mt-4">
-  <div class="avatar mr-5" style="float: left">
-    <img src="{{user.image}}" class="img-fluid" alt="Responsive image">
+<div class="mt-4 row">
+  <div class="avatar mr-5 col-5" style="float: left">
+    <img src="{{profileUser.image}}" class="img-fluid" alt="Responsive image">
   </div>
 
-  <div>
-    <h3 class="user-name">{{user.name}}</h3>
-    <p class="user-email lead">{{user.email}}</p>
-    {{#ifCond user.id userId}}
-    <a href="/users/{{user.id}}/edit" class="btn btn-primary">edit</a>
+  <div class="col">
+    <h3 class="user-name">{{profileUser.name}}</h3>
+    <p class="user-email lead">{{profileUser.email}}</p>
+    <p class="">{{Number_of_comments}}已評論餐廳</p>
+    {{#ifCond profileUser.id currentUser.id}}
+    <a href="/users/{{profileUser.id}}/edit" class="btn btn-primary">edit</a>
     {{/ifCond}}
   </div>
 
+</div>
+
+<div class="card mt-4">
+  <h5 class="card-header">{{Number_of_comments}}已評論餐廳</h5>
+  <div class="card-body row">
+    {{#each profileUser.Comments}}
+    <a class="col-1" href="/restaurants/{{this.Restaurant.id}}">
+      <div
+        style="width: 100%; height: 47px; background-image: url('{{this.Restaurant.image}}'); background-repeat:no-repeat; background-size:cover;">
+      </div>
+    </a>
+    {{/each}}
+  </div>
 </div>
