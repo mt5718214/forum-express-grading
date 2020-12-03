@@ -1,0 +1,14 @@
+<div class="mt-4">
+  <div class="avatar mr-5" style="float: left">
+    <img src="{{user.image}}" class="img-fluid" alt="Responsive image">
+  </div>
+
+  <div>
+    <h3 class="user-name">{{user.name}}</h3>
+    <p class="user-email lead">{{user.email}}</p>
+    {{#ifCond user.id userId}}
+    <a href="/users/{{user.id}}/edit" class="btn btn-primary">edit</a>
+    {{/ifCond}}
+  </div>
+
+</div>

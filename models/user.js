@@ -17,7 +17,11 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN
+    isAdmin: DataTypes.BOOLEAN,
+    image: {
+      type: DataTypes.STRING,
+      defaultValue: 'https://fakeimg.pl/350x200/ff0000/000,255'
+    }
   }, {
     sequelize,
     modelName: 'User',
