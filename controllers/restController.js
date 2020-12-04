@@ -57,14 +57,18 @@ const restController = {
     Restaurant.findByPk(req.params.id, {
       include: [
         Category,
-        { model: Comment, include: [User] }
+        { model: Comment, include: [User] },
+        { model: User, as: 'FavoritedUsers' }
       ]
     }).then(restaurant => {
+      //檢查使用者是否出現在收藏「這間餐廳的使用者列表」
+      const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+
       // console.log(restaurant.Comments[0].User)
       restaurant.viewCounts += 1
       restaurant.save({ fields: ['viewCounts'] })
         .then(restaurant => {
-          return res.render('restaurant', { restaurant: restaurant.toJSON() })
+          return res.render('restaurant', { restaurant: restaurant.toJSON(), isFavorited })
         })
     })
   },
