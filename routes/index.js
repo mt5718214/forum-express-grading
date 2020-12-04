@@ -7,6 +7,7 @@ const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
 const helpers = require('../_helpers')
+const { use } = require('chai')
 
 module.exports = (app, passport) => {
   const authenticated = (req, res, next) => {
@@ -41,6 +42,9 @@ module.exports = (app, passport) => {
 
   app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
   app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
+
+  app.post('/like/:restaurantId', authenticated, userController.likeRestaurant)
+  app.delete('/like/:restaurantId', authenticated, userController.unlikeRestaurant)
 
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)

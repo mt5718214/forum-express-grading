@@ -4,6 +4,8 @@ const Category = db.Category
 const Comment = db.Comment
 const User = db.User
 
+const helpers = require('../_helpers')
+
 const pageLimit = 10
 
 const restController = {
@@ -36,7 +38,8 @@ const restController = {
         ...r.dataValues,  //利用展開運算子複製物件並展開其內容
         description: r.dataValues.description.substring(0, 50),
         categoryName: r.Category.name,
-        isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id)
+        isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id),
+        isLiked: req.user.LikedRestaurants.map(d => d.id).includes(r.id)
       }))
 
       Category.findAll({ raw: true }).then(categories => {
@@ -58,17 +61,19 @@ const restController = {
       include: [
         Category,
         { model: Comment, include: [User] },
-        { model: User, as: 'FavoritedUsers' }
+        { model: User, as: 'FavoritedUsers' },
+        { model: User, as: 'LikedUsers' }
       ]
     }).then(restaurant => {
       //檢查使用者是否出現在收藏「這間餐廳的使用者列表」
-      const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+      const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(helpers.getUser(req).id)
+      const isLiked = restaurant.LikedUsers.map(d => d.id).includes(helpers.getUser(req).id)
 
       // console.log(restaurant.Comments[0].User)
       restaurant.viewCounts += 1
       restaurant.save({ fields: ['viewCounts'] })
         .then(restaurant => {
-          return res.render('restaurant', { restaurant: restaurant.toJSON(), isFavorited })
+          return res.render('restaurant', { restaurant: restaurant.toJSON(), isFavorited, isLiked })
         })
     })
   },
