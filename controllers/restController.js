@@ -35,7 +35,8 @@ const restController = {
       const data = result.rows.map(r => ({  // findAndCountAll中可利用rows取得資料
         ...r.dataValues,  //利用展開運算子複製物件並展開其內容
         description: r.dataValues.description.substring(0, 50),
-        categoryName: r.Category.name
+        categoryName: r.Category.name,
+        isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id)
       }))
 
       Category.findAll({ raw: true }).then(categories => {
