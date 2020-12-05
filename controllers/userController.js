@@ -57,14 +57,40 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    const currentUser = helpers.getUser(req)  //當前使用者
-
-    User.findByPk(req.params.id, { include: [{ model: Comment, include: [Restaurant] }] })
+    User.findByPk(req.params.id, {
+      include: [
+        { model: Comment, include: [Restaurant] },
+        { model: Restaurant, as: 'FavoritedRestaurants' },
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' }
+      ]
+    })
       .then(user => {
         // console.log(user.dataValues.Comments[0].dataValues)
         // console.log(user.Comments.length)
         const Number_of_comments = user.Comments.length
-        return res.render('userProfile', { profileUser: user.toJSON(), currentUser, Number_of_comments })
+        const Number_of_followings = user.Followings.length
+        const Number_of_followers = user.Followers.length
+        const Number_of_favoriteRests = user.FavoritedRestaurants.length
+        const commentedRests = []
+        const nonRepeatRests = []
+
+        //篩選不重複的餐廳
+        user.dataValues.Comments.forEach(c => {
+          if (!nonRepeatRests.includes(c.RestaurantId)) {
+            nonRepeatRests.push(c.RestaurantId)
+            commentedRests.push(c.Restaurant.dataValues)
+          }
+        })
+
+        return res.render('userProfile', {
+          profileUser: user.toJSON(),
+          Number_of_comments,
+          Number_of_followings,
+          Number_of_followers,
+          Number_of_favoriteRests,
+          commentedRests
+        })
       })
   },
 
