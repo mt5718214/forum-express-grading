@@ -11,15 +11,13 @@ module.exports = {
   },
 
   postCategory: (req, res) => {
-    if (!req.body.name) {
-      req.flash('error_msg', "name didn't exist")
-      return res.redirect('back')
-    }
+    categoryService.postCategory(req, res, (data) => {
+      if (data['status'] === 'error') {
+        req.flash('error_msg', data['message'])
+        return res.redirect('back')
+      }
 
-    return Category.create({
-      name: req.body.name
-    }).then(category => {
-      req.flash('success_msg', 'Category has been successfully added')
+      req.flash('success_msg', data['message'])
       res.redirect('/admin/categories')
     })
   },
