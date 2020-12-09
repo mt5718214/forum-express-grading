@@ -23,19 +23,14 @@ module.exports = {
   },
 
   putCategory: (req, res) => {
-    if (!req.body.name) {
-      req.flash('error_msg', "name didn't exist")
-      return res.redirect('back')
-    }
+    categoryService.putCategory(req, res, (data) => {
+      if (data['status'] === 'error') {
+        req.flash('error_msg', data['message'])
+        return res.redirect('back')
+      }
 
-    return Category.findByPk(req.params.id).then(category => {
-      return category.update({
-        name: req.body.name
-      })
-        .then(category => {
-          req.flash('success_msg', 'Category has been successfully updated')
-          res.redirect('/admin/categories')
-        })
+      req.flash('success_msg', data['message'])
+      res.redirect('/admin/categories')
     })
   },
 
