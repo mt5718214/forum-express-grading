@@ -35,14 +35,12 @@ module.exports = {
   },
 
   deleteCategory: (req, res) => {
-    return Category.findByPk(req.params.id)
-      .then((category) => {
-        category.destroy()
-          .then((category) => {
-            req.flash('success_msg', 'Category has been successfully deleted')
-            res.redirect('/admin/categories')
-          })
-      })
+    categoryService.deleteCategory(req, res, (data) => {
+      if (data['status'] === 'success') {
+        req.flash('success_msg', data['message'])
+        res.redirect('/admin/categories')
+      }
+    })
   }
 
 }
